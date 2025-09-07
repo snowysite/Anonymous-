@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnonLink - Anonymous Messages</title>
+    <title>Nexora - Anonymous Messages</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .gradient-bg { background: linear-gradient(135deg, #ff4500 0%, #000000 100%); }
         .glass-effect { 
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -37,7 +37,7 @@
         <!-- Header -->
         <div class="text-center mb-8">
             <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-                🎭 AnonLink
+                🔥 Nexora
             </h1>
             <p class="text-xl text-white/90 mb-6">
                 Create your anonymous message link and receive messages privately
@@ -61,7 +61,7 @@
                     >
                     <button 
                         onclick="createLink()" 
-                        class="w-full bg-white text-purple-600 font-semibold py-3 px-6 rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105"
+                        class="w-full bg-white text-orange-600 font-semibold py-3 px-6 rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105"
                     >
                         Generate My Link 🚀
                     </button>
@@ -182,7 +182,7 @@
                 <p class="text-gray-600 mb-4">Your anonymous message has been delivered successfully.</p>
                 <button 
                     onclick="closeModal()" 
-                    class="bg-purple-600 text-white px-6 py-2 rounded-xl hover:bg-purple-700 transition-colors"
+                    class="bg-orange-600 text-white px-6 py-2 rounded-xl hover:bg-orange-700 transition-colors"
                 >
                     Great! 🎉
                 </button>
@@ -192,8 +192,8 @@
 
     <script>
         // Storage keys
-        const STORAGE_KEY = 'anonlink_messages_';
-        const USER_KEY = 'anonlink_current_user';
+        const STORAGE_KEY = 'nexora_messages_';
+        const USER_KEY = 'nexora_current_user';
         
         let currentUser = localStorage.getItem(USER_KEY) || '';
 
@@ -378,5 +378,5 @@
         // Handle browser back/forward buttons
         window.addEventListener('popstate', init);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b23123d523940d',t:'MTc1NzIwNjAxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b24296d5ddbee4',t:'MTc1NzIwNjczMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
