@@ -44,14 +44,17 @@
             </p>
         </div>
 
-        <!-- Login/Register View -->
-        <div id="authView" class="space-y-8">
-            <!-- Login Section -->
-            <div class="glass-effect rounded-2xl p-6 md:p-8">
-                <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                    <span class="mr-3">🔐</span>
-                    Login to Your Account
-                </h2>
+        <!-- Login Form -->
+        <div id="loginView" class="space-y-8">
+            <div class="glass-effect rounded-2xl p-6 md:p-8 max-w-md mx-auto">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-white mb-2 flex items-center justify-center">
+                        <span class="mr-3">🔐</span>
+                        Welcome Back!
+                    </h2>
+                    <p class="text-white/80">Login to access your anonymous messages</p>
+                </div>
+                
                 <div class="space-y-4">
                     <input 
                         type="text" 
@@ -72,14 +75,40 @@
                         Login 🚀
                     </button>
                 </div>
+                
+                <div class="mt-6 text-center space-y-3">
+                    <p class="text-white/70 text-sm">Don't have an account?</p>
+                    <button 
+                        onclick="showRegisterView()" 
+                        class="text-orange-300 hover:text-orange-200 font-medium underline"
+                    >
+                        Create New Account
+                    </button>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-white/20 text-center">
+                    <p class="text-white/60 text-xs mb-3">Have an account from another device?</p>
+                    <button 
+                        onclick="showImportModal()" 
+                        class="text-yellow-300 hover:text-yellow-200 text-sm font-medium underline"
+                    >
+                        📥 Import Account
+                    </button>
+                </div>
             </div>
+        </div>
 
-            <!-- Register Section -->
-            <div class="glass-effect rounded-2xl p-6 md:p-8">
-                <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                    <span class="mr-3">📝</span>
-                    Create New Account
-                </h2>
+        <!-- Register Form -->
+        <div id="registerView" class="space-y-8 hidden">
+            <div class="glass-effect rounded-2xl p-6 md:p-8 max-w-md mx-auto">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-white mb-2 flex items-center justify-center">
+                        <span class="mr-3">📝</span>
+                        Create Account
+                    </h2>
+                    <p class="text-white/80">Join Nexora and get your anonymous message link</p>
+                </div>
+                
                 <div class="space-y-4">
                     <input 
                         type="text" 
@@ -90,7 +119,7 @@
                     <input 
                         type="password" 
                         id="registerPassword" 
-                        placeholder="Create a password"
+                        placeholder="Create a password (min 6 characters)"
                         class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
                     >
                     <input 
@@ -104,6 +133,26 @@
                         class="w-full bg-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-orange-600 transition-all duration-300 transform hover:scale-105"
                     >
                         Create Account 🎉
+                    </button>
+                </div>
+                
+                <div class="mt-6 text-center space-y-3">
+                    <p class="text-white/70 text-sm">Already have an account?</p>
+                    <button 
+                        onclick="showLoginView()" 
+                        class="text-orange-300 hover:text-orange-200 font-medium underline"
+                    >
+                        Login Here
+                    </button>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-white/20 text-center">
+                    <p class="text-white/60 text-xs mb-3">Have an account from another device?</p>
+                    <button 
+                        onclick="showImportModal()" 
+                        class="text-yellow-300 hover:text-yellow-200 text-sm font-medium underline"
+                    >
+                        📥 Import Account
                     </button>
                 </div>
             </div>
@@ -160,34 +209,27 @@
                         Share Link 📤
                     </button>
                 </div>
-            </div>
-
-            <!-- Generated Link Display -->
-            <div id="linkDisplay" class="glass-effect rounded-2xl p-6 md:p-8 hidden">
-                <h3 class="text-xl font-semibold text-white mb-4">Your Anonymous Link is Ready! 🎉</h3>
-                <div class="bg-white/20 rounded-xl p-4 mb-4">
-                    <p class="text-white/90 text-sm mb-2">Share this link to receive anonymous messages:</p>
+                
+                <div class="mt-4 pt-4 border-t border-white/20">
+                    <h4 class="text-white font-medium mb-3">📱 Use on Other Devices</h4>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input 
-                            type="text" 
-                            id="generatedLink" 
-                            readonly 
-                            class="flex-1 px-3 py-2 bg-white rounded-lg text-gray-800 text-sm"
-                        >
                         <button 
-                            onclick="copyLink()" 
-                            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
+                            onclick="exportAccount()" 
+                            class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm"
                         >
-                            📋 Copy
+                            📤 Export Account
+                        </button>
+                        <button 
+                            onclick="showImportModal()" 
+                            class="flex-1 bg-yellow-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 transition-colors text-sm"
+                        >
+                            📥 Import Account
                         </button>
                     </div>
+                    <p class="text-white/60 text-xs mt-2">
+                        Export your account to access it on any device. Your messages and settings will be preserved.
+                    </p>
                 </div>
-                <button 
-                    onclick="viewMessages()" 
-                    class="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-600 transition-colors"
-                >
-                    View My Messages 📬
-                </button>
             </div>
 
             <!-- Demo Link Section -->
@@ -282,6 +324,82 @@
                 </button>
             </div>
         </div>
+
+        <!-- Import Account Modal -->
+        <div id="importModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 hidden z-50">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+                <div class="text-center mb-4">
+                    <div class="text-4xl mb-2">📥</div>
+                    <h3 class="text-xl font-semibold text-gray-800">Import Account</h3>
+                    <p class="text-gray-600 text-sm">Paste your account code to access your account on this device</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <textarea 
+                        id="importCode" 
+                        placeholder="Paste your account export code here..."
+                        rows="4"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                    ></textarea>
+                    
+                    <div class="flex gap-2">
+                        <button 
+                            onclick="importAccount()" 
+                            class="flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors"
+                        >
+                            Import Account
+                        </button>
+                        <button 
+                            onclick="closeImportModal()" 
+                            class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Success Modal -->
+        <div id="exportModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 hidden z-50">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+                <div class="text-center mb-4">
+                    <div class="text-4xl mb-2">📤</div>
+                    <h3 class="text-xl font-semibold text-gray-800">Account Exported!</h3>
+                    <p class="text-gray-600 text-sm">Copy this code to import your account on another device</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <textarea 
+                        id="exportCode" 
+                        readonly
+                        rows="4"
+                        class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-mono"
+                    ></textarea>
+                    
+                    <div class="flex gap-2">
+                        <button 
+                            onclick="copyExportCode()" 
+                            class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                            📋 Copy Code
+                        </button>
+                        <button 
+                            onclick="closeExportModal()" 
+                            class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors"
+                        >
+                            Done
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-blue-800">
+                        <strong>💡 Tip:</strong> Save this code securely. You can use it to access your account and messages on any device!
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -318,7 +436,7 @@
             if (recipient) {
                 showSendMessageView(recipient);
             } else {
-                showAuthView();
+                showLoginView();
             }
         }
 
@@ -408,12 +526,122 @@
         function logout() {
             localStorage.removeItem(SESSION_KEY);
             currentUser = '';
-            showAuthView();
+            showLoginView();
+        }
+
+        // Export account for cross-device usage
+        function exportAccount() {
+            if (!currentUser) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+            const messages = JSON.parse(localStorage.getItem(STORAGE_KEY + currentUser) || '[]');
+            
+            const exportData = {
+                username: currentUser,
+                password: users[currentUser].password,
+                createdAt: users[currentUser].createdAt,
+                messages: messages,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const exportCode = btoa(JSON.stringify(exportData));
+            document.getElementById('exportCode').value = exportCode;
+            document.getElementById('exportModal').classList.remove('hidden');
+        }
+
+        // Import account from export code
+        function importAccount() {
+            const importCode = document.getElementById('importCode').value.trim();
+            
+            if (!importCode) {
+                alert('Please paste your account code!');
+                return;
+            }
+            
+            try {
+                const exportData = JSON.parse(atob(importCode));
+                
+                // Validate export data structure
+                if (!exportData.username || !exportData.password) {
+                    throw new Error('Invalid account code');
+                }
+                
+                // Import user account
+                const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+                users[exportData.username] = {
+                    password: exportData.password,
+                    createdAt: exportData.createdAt
+                };
+                localStorage.setItem(USERS_KEY, JSON.stringify(users));
+                
+                // Import messages
+                if (exportData.messages && exportData.messages.length > 0) {
+                    localStorage.setItem(STORAGE_KEY + exportData.username, JSON.stringify(exportData.messages));
+                }
+                
+                // Auto login
+                createSession(exportData.username);
+                closeImportModal();
+                showDashboard();
+                
+                alert(`Account "${exportData.username}" imported successfully! You can now access your messages on this device.`);
+                
+            } catch (error) {
+                alert('Invalid account code! Please check and try again.');
+            }
+        }
+
+        // Modal functions
+        function showImportModal() {
+            document.getElementById('importModal').classList.remove('hidden');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.add('hidden');
+            document.getElementById('importCode').value = '';
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.add('hidden');
+        }
+
+        function copyExportCode() {
+            const exportCode = document.getElementById('exportCode');
+            exportCode.select();
+            exportCode.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                alert('Please manually copy the code');
+            }
         }
 
         // View management functions
-        function showAuthView() {
-            document.getElementById('authView').classList.remove('hidden');
+        function showLoginView() {
+            document.getElementById('loginView').classList.remove('hidden');
+            document.getElementById('registerView').classList.add('hidden');
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('sendMessageView').classList.add('hidden');
+            document.getElementById('viewMessagesView').classList.add('hidden');
+            
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        function showRegisterView() {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('registerView').classList.remove('hidden');
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('sendMessageView').classList.add('hidden');
             document.getElementById('viewMessagesView').classList.add('hidden');
@@ -423,7 +651,8 @@
         }
 
         function showDashboard() {
-            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('registerView').classList.add('hidden');
             document.getElementById('homeView').classList.remove('hidden');
             document.getElementById('sendMessageView').classList.add('hidden');
             document.getElementById('viewMessagesView').classList.add('hidden');
@@ -483,7 +712,8 @@
         }
 
         function showSendMessageView(recipient) {
-            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('registerView').classList.add('hidden');
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('sendMessageView').classList.remove('hidden');
             document.getElementById('viewMessagesView').classList.add('hidden');
@@ -491,7 +721,8 @@
         }
 
         function showViewMessagesView() {
-            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('registerView').classList.add('hidden');
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('sendMessageView').classList.add('hidden');
             document.getElementById('viewMessagesView').classList.remove('hidden');
@@ -574,7 +805,7 @@
             if (currentUser) {
                 showDashboard();
             } else {
-                showAuthView();
+                showLoginView();
             }
         }
 
@@ -594,5 +825,5 @@
         // Handle browser back/forward buttons
         window.addEventListener('popstate', init);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b24d7f655acd39',t:'MTc1NzIwNzE3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b260ec41d8641b',t:'MTc1NzIwNzk3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
