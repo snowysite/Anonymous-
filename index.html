@@ -44,26 +44,120 @@
             </p>
         </div>
 
-        <!-- Main Content -->
-        <div id="homeView" class="space-y-8">
-            <!-- Create Link Section -->
+        <!-- Login/Register View -->
+        <div id="authView" class="space-y-8">
+            <!-- Login Section -->
             <div class="glass-effect rounded-2xl p-6 md:p-8">
                 <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                    <span class="mr-3">🔗</span>
-                    Create Your Anonymous Link
+                    <span class="mr-3">🔐</span>
+                    Login to Your Account
                 </h2>
                 <div class="space-y-4">
                     <input 
                         type="text" 
-                        id="usernameInput" 
-                        placeholder="Enter your username (e.g., john_doe)"
+                        id="loginUsername" 
+                        placeholder="Enter your username"
+                        class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                    >
+                    <input 
+                        type="password" 
+                        id="loginPassword" 
+                        placeholder="Enter your password"
                         class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
                     >
                     <button 
-                        onclick="createLink()" 
+                        onclick="login()" 
                         class="w-full bg-white text-orange-600 font-semibold py-3 px-6 rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105"
                     >
-                        Generate My Link 🚀
+                        Login 🚀
+                    </button>
+                </div>
+            </div>
+
+            <!-- Register Section -->
+            <div class="glass-effect rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                    <span class="mr-3">📝</span>
+                    Create New Account
+                </h2>
+                <div class="space-y-4">
+                    <input 
+                        type="text" 
+                        id="registerUsername" 
+                        placeholder="Choose a username (e.g., john_doe)"
+                        class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                    >
+                    <input 
+                        type="password" 
+                        id="registerPassword" 
+                        placeholder="Create a password"
+                        class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                    >
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        placeholder="Confirm your password"
+                        class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                    >
+                    <button 
+                        onclick="register()" 
+                        class="w-full bg-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-orange-600 transition-all duration-300 transform hover:scale-105"
+                    >
+                        Create Account 🎉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="homeView" class="space-y-8 hidden">
+            <!-- User Dashboard -->
+            <div class="glass-effect rounded-2xl p-6 md:p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white mb-2">
+                            Welcome back, <span id="currentUsername" class="text-orange-300"></span>! 👋
+                        </h2>
+                        <p class="text-white/80">Your anonymous message link is ready to share</p>
+                    </div>
+                    <button 
+                        onclick="logout()" 
+                        class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition-colors mt-4 sm:mt-0"
+                    >
+                        Logout 🚪
+                    </button>
+                </div>
+                
+                <div class="bg-white/20 rounded-xl p-4 mb-4">
+                    <p class="text-white/90 text-sm mb-2">Your anonymous message link:</p>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input 
+                            type="text" 
+                            id="userLink" 
+                            readonly 
+                            class="flex-1 px-3 py-2 bg-white rounded-lg text-gray-800 text-sm"
+                        >
+                        <button 
+                            onclick="copyUserLink()" 
+                            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
+                        >
+                            📋 Copy Link
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button 
+                        onclick="viewMessages()" 
+                        class="flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-600 transition-colors"
+                    >
+                        View My Messages 📬
+                    </button>
+                    <button 
+                        onclick="shareLink()" 
+                        class="flex-1 bg-purple-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-purple-600 transition-colors"
+                    >
+                        Share Link 📤
                     </button>
                 </div>
             </div>
@@ -194,27 +288,48 @@
         // Storage keys
         const STORAGE_KEY = 'nexora_messages_';
         const USER_KEY = 'nexora_current_user';
+        const USERS_KEY = 'nexora_users';
+        const SESSION_KEY = 'nexora_session';
         
-        let currentUser = localStorage.getItem(USER_KEY) || '';
+        let currentUser = '';
 
         // Initialize app
         function init() {
             const urlParams = new URLSearchParams(window.location.search);
             const recipient = urlParams.get('to');
             
+            // Check if user is logged in
+            const session = localStorage.getItem(SESSION_KEY);
+            if (session) {
+                const sessionData = JSON.parse(session);
+                if (sessionData.expires > Date.now()) {
+                    currentUser = sessionData.username;
+                    if (recipient) {
+                        showSendMessageView(recipient);
+                    } else {
+                        showDashboard();
+                    }
+                    return;
+                } else {
+                    localStorage.removeItem(SESSION_KEY);
+                }
+            }
+            
             if (recipient) {
                 showSendMessageView(recipient);
             } else {
-                showHomeView();
+                showAuthView();
             }
         }
 
-        // Create anonymous link
-        function createLink() {
-            const username = document.getElementById('usernameInput').value.trim();
+        // Authentication functions
+        function register() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
             
-            if (!username) {
-                alert('Please enter a username!');
+            if (!username || !password || !confirmPassword) {
+                alert('Please fill in all fields!');
                 return;
             }
             
@@ -223,20 +338,108 @@
                 return;
             }
             
-            currentUser = username;
-            localStorage.setItem(USER_KEY, currentUser);
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
             
-            const link = `${window.location.origin}${window.location.pathname}?to=${encodeURIComponent(username)}`;
-            document.getElementById('generatedLink').value = link;
-            document.getElementById('linkDisplay').classList.remove('hidden');
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
             
-            // Scroll to the generated link
-            document.getElementById('linkDisplay').scrollIntoView({ behavior: 'smooth' });
+            // Check if username already exists
+            const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+            if (users[username]) {
+                alert('Username already exists! Please choose a different one.');
+                return;
+            }
+            
+            // Create user account
+            users[username] = {
+                password: password, // In real app, this would be hashed
+                createdAt: new Date().toISOString()
+            };
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+            
+            // Auto login after registration
+            createSession(username);
+            showDashboard();
+            
+            // Clear form
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
         }
 
-        // Copy link to clipboard
-        function copyLink() {
-            const linkInput = document.getElementById('generatedLink');
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('Please enter both username and password!');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+            
+            if (!users[username] || users[username].password !== password) {
+                alert('Invalid username or password!');
+                return;
+            }
+            
+            createSession(username);
+            showDashboard();
+            
+            // Clear form
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function createSession(username) {
+            currentUser = username;
+            const session = {
+                username: username,
+                expires: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+            };
+            localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        }
+
+        function logout() {
+            localStorage.removeItem(SESSION_KEY);
+            currentUser = '';
+            showAuthView();
+        }
+
+        // View management functions
+        function showAuthView() {
+            document.getElementById('authView').classList.remove('hidden');
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('sendMessageView').classList.add('hidden');
+            document.getElementById('viewMessagesView').classList.add('hidden');
+            
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        function showDashboard() {
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('sendMessageView').classList.add('hidden');
+            document.getElementById('viewMessagesView').classList.add('hidden');
+            
+            // Update dashboard with user info
+            document.getElementById('currentUsername').textContent = currentUser;
+            const userLink = `${window.location.origin}${window.location.pathname}?to=${encodeURIComponent(currentUser)}`;
+            document.getElementById('userLink').value = userLink;
+            
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Copy user link to clipboard
+        function copyUserLink() {
+            const linkInput = document.getElementById('userLink');
             linkInput.select();
             linkInput.setSelectionRange(0, 99999);
             
@@ -256,23 +459,31 @@
             }
         }
 
+        // Share link function
+        function shareLink() {
+            const userLink = document.getElementById('userLink').value;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Send me an anonymous message!',
+                    text: 'Send me an anonymous message on Nexora',
+                    url: userLink
+                }).catch(err => console.log('Error sharing:', err));
+            } else {
+                // Fallback - copy to clipboard
+                copyUserLink();
+                alert('Link copied to clipboard! Share it with your friends.');
+            }
+        }
+
         // Open demo link
         function openDemoLink() {
             const demoLink = `${window.location.origin}${window.location.pathname}?to=demo_user`;
             window.open(demoLink, '_blank');
         }
 
-        // Show different views
-        function showHomeView() {
-            document.getElementById('homeView').classList.remove('hidden');
-            document.getElementById('sendMessageView').classList.add('hidden');
-            document.getElementById('viewMessagesView').classList.add('hidden');
-            
-            // Clear URL parameters
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
         function showSendMessageView(recipient) {
+            document.getElementById('authView').classList.add('hidden');
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('sendMessageView').classList.remove('hidden');
             document.getElementById('viewMessagesView').classList.add('hidden');
@@ -280,6 +491,7 @@
         }
 
         function showViewMessagesView() {
+            document.getElementById('authView').classList.add('hidden');
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('sendMessageView').classList.add('hidden');
             document.getElementById('viewMessagesView').classList.remove('hidden');
@@ -325,7 +537,7 @@
         // View messages
         function viewMessages() {
             if (!currentUser) {
-                alert('Please create a link first!');
+                alert('Please login first!');
                 return;
             }
             showViewMessagesView();
@@ -359,7 +571,11 @@
 
         // Utility functions
         function goHome() {
-            showHomeView();
+            if (currentUser) {
+                showDashboard();
+            } else {
+                showAuthView();
+            }
         }
 
         function closeModal() {
@@ -378,5 +594,5 @@
         // Handle browser back/forward buttons
         window.addEventListener('popstate', init);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b24296d5ddbee4',t:'MTc1NzIwNjczMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b24d7f655acd39',t:'MTc1NzIwNzE3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
